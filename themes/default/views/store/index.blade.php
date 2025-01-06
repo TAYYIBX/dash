@@ -25,7 +25,7 @@
         <div class="container-fluid">
 
             <div class="text-right mb-3">
-                <button type="button" onclick="openPopup('{{ url('https://example.com') }}', 'TopUpPopup', 600, 400);" class="btn btn-primary">
+                <button type="button" onclick="openPopup('{{ url('top-up-url') }}', 'TopUpPopup', 600, 400);" class="btn btn-primary">
                     <i class="fas fa-money-check-alt mr-2"></i>{{ __('Top Up') }}
                 </button>
             </div>
@@ -33,55 +33,32 @@
             @if ($isStoreEnabled && $products->count() > 0)
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title"><i class="fa fa-coins mr-2"></i>{{ $credits_display_name }}</h5>
+                        <h5 class="card-title"><i class="fa fa-video mr-2"></i>{{ __('YouTube Videos') }}</h5>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped table-responsive-sm">
-                            <thead>
-                                <tr>
-                                    <th>{{ __('Price') }}</th>
-                                    <th>{{ __('Type') }}</th>
-                                    <th>{{ __('Description') }}</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($products as $product)
-                                    <tr>
-                                        <td>{{ $product->formatToCurrency($product->price) }}</td>
-                                        <td>{{ strtolower($product->type) == 'credits' ? $credits_display_name : $product->type }}
-                                        </td>
-                                        <td>
-                                            @if (strtolower($product->type) == 'credits')
-                                                <i class="fa fa-coins mr-2"></i>
-                                            @elseif (strtolower($product->type) == 'server slots')
-                                                <i class="fa fa-server mr-2"></i>
-                                            @endif
-
-                                            {{ $product->display }}
-                                        </td>
-                                        <td><a href="{{ route('checkout', $product->id) }}"
-                                                class="btn btn-info @cannot('user.shop.buy') disabled @endcannot">{{ __('Purchase') }}</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            @foreach ($products as $product)
+                                @if ($product->youtube_video_id) <!-- Only display products with YouTube video -->
+                                    <div class="col-md-4">
+                                        <div class="video-container mb-3">
+                                            <a href="https://youtu.be/8gz-3zm7Quc?si=w0tLbu0lyt1BMNqh" target="_blank">
+                                                <img src="https://img.youtube.com/vi/8gz-3zm7Quc/0.jpg" class="img-fluid" alt="Watch Video">
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             @else
                 <div class="alert alert-danger alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h4><i class="icon fa fa-ban"></i>
-                        @if ($products->count() == 0)
-                            {{ __('There are no store products!') }}
-                        @else
-                            {{ __('The store is not correctly configured!') }}
-                        @endif
+                        {{ __('There are no store products with videos!') }}
                     </h4>
                 </div>
             @endif
-
 
         </div>
     </section>
