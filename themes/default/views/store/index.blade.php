@@ -25,7 +25,7 @@
         <div class="container-fluid">
 
             <div class="text-right mb-3">
-                <button type="button" data-toggle="modal" data-target="#redeemVoucherModal" class="btn btn-primary">
+                <button type="button" onclick="openPopup('{{ url('https://example.com') }}', 'TopUpPopup', 600, 400);" class="btn btn-primary">
                     <i class="fas fa-money-check-alt mr-2"></i>{{ __('Top Up') }}
                 </button>
             </div>
@@ -101,7 +101,21 @@
                 $('#redeemVoucherCode').val(voucherCode);
             });
         }
-    </script>
 
+        function openPopup(url, title, width, height) {
+            const screenX = window.screenX || window.screenLeft;
+            const screenY = window.screenY || window.screenTop;
+            const outerWidth = window.outerWidth || document.documentElement.clientWidth;
+            const outerHeight = window.outerHeight || document.documentElement.clientHeight - 22;
+            const left = screenX + (outerWidth - width) / 2;
+            const top = screenY + (outerHeight - height) / 2;
+
+            window.open(
+                url,
+                title,
+                `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+            );
+        }
+    </script>
 
 @endsection
